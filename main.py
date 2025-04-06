@@ -22,7 +22,7 @@ class DatabaseConnection:
             self.conn.close()
 
 def json_serializer(obj: Any) -> Any:
-    """Serialize special data types to JSON."""
+    """Serializa tipos de datos especiales a JSON."""
     if isinstance(obj, (datetime, date)):
         return obj.isoformat()
     if isinstance(obj, Decimal):
@@ -30,7 +30,7 @@ def json_serializer(obj: Any) -> Any:
     raise TypeError(f"Type {type(obj)} not serializable")
 
 async def list_tables(db: DatabaseConnection) -> str:
-    """Get list of all tables in the database."""
+    """Obtiene la lista de todas las tablas en la base de datos."""
     try:
         cur = db.conn.cursor()
         cur.execute("""
@@ -52,10 +52,10 @@ async def list_tables(db: DatabaseConnection) -> str:
         return f"Error listing tables: {str(e)}"
 
 async def get_table_info(db: DatabaseConnection, table: str) -> str:
-    """Get detailed information about a specific table.
+    """Obtiene información detallada sobre una tabla específica.
     
     Args:
-        table: Name of the table to get information about
+        table: Nombre de la tabla sobre la que obtener información
     """
     try:
         cur = db.conn.cursor()
@@ -106,11 +106,11 @@ async def get_table_info(db: DatabaseConnection, table: str) -> str:
         return f"Error getting table info for {table}: {str(e)}"
 
 async def query_table(db: DatabaseConnection, table: str, limit: Optional[int] = 5) -> str:
-    """Query data from a table.
+    """Consulta datos de una tabla.
     
     Args:
-        table: Name of the table to query
-        limit: Maximum number of rows to return (default: 5)
+        table: Nombre de la tabla a consultar
+        limit: Número máximo de filas a retornar (por defecto: 5)
     """
     try:
         cur = db.conn.cursor(cursor_factory=RealDictCursor)
@@ -133,11 +133,11 @@ async def query_table(db: DatabaseConnection, table: str, limit: Optional[int] =
         return f"Error querying table {table}: {str(e)}"
 
 async def execute_query(db: DatabaseConnection, query: str, params: Optional[tuple] = None) -> str:
-    """Execute a custom SQL query.
+    """Ejecuta una consulta SQL personalizada.
     
     Args:
-        query: SQL query to execute
-        params: Optional tuple of parameters for the query
+        query: Consulta SQL a ejecutar
+        params: Tupla opcional de parámetros para la consulta
     """
     try:
         cur = db.conn.cursor(cursor_factory=RealDictCursor)
@@ -178,7 +178,7 @@ def get_db():
 
 @mcp.tool()
 async def list_tables_tool(args: dict) -> str:
-    """List all tables in the database."""
+    """Lista todas las tablas en la base de datos."""
     db = get_db()
     if not db:
         return "Error: Could not connect to database"
@@ -189,10 +189,10 @@ async def list_tables_tool(args: dict) -> str:
 
 @mcp.tool()
 async def get_table_info_tool(args: dict) -> str:
-    """Get detailed information about a specific table.
+    """Obtiene información detallada sobre una tabla específica.
     
     Args:
-        table: Name of the table to get information about
+        table: Nombre de la tabla sobre la que obtener información
     """
     db = get_db()
     if not db:
@@ -209,11 +209,11 @@ async def get_table_info_tool(args: dict) -> str:
 
 @mcp.tool()
 async def query_table_tool(args: dict) -> str:
-    """Query data from a specific table.
+    """Consulta datos de una tabla específica.
     
     Args:
-        table: Name of the table to query
-        limit: Maximum number of rows to return (optional, default: 5)
+        table: Nombre de la tabla a consultar
+        limit: Número máximo de filas a retornar (opcional, por defecto: 5)
     """
     db = get_db()
     if not db:
@@ -232,11 +232,11 @@ async def query_table_tool(args: dict) -> str:
 
 @mcp.tool()
 async def execute_query_tool(args: dict) -> str:
-    """Execute a custom SQL query.
+    """Ejecuta una consulta SQL personalizada.
     
     Args:
-        query: SQL query to execute
-        params: Optional tuple of parameters for the query (optional)
+        query: Consulta SQL a ejecutar
+        params: Tupla opcional de parámetros para la consulta (opcional)
     """
     db = get_db()
     if not db:

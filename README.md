@@ -1,80 +1,80 @@
-# PostgreSQL MCP Server Functions Overview
+# Descripción General de las Funciones del Servidor MCP PostgreSQL
 
-## Database Connection Class
+## Clase de Conexión a Base de Datos
 
 ### `DatabaseConnection`
-- **Purpose**: Manages PostgreSQL database connections
-- **Constructor Parameters**:
-  - `host`: str (default: "localhost")
-  - `database`: str (default: "postgres")
-  - `user`: str (default: "postgres")
-  - `password`: str (default: "codenexus")
-- **Methods**:
-  - `close()`: Closes the database connection
+- **Propósito**: Gestiona las conexiones a la base de datos PostgreSQL
+- **Parámetros del Constructor**:
+  - `host`: str (por defecto: "localhost")
+  - `database`: str (por defecto: "postgres")
+  - `user`: str (por defecto: "postgres")
+  - `password`: str (por defecto: "codenexus")
+- **Métodos**:
+  - `close()`: Cierra la conexión a la base de datos
 
-## Helper Functions
+## Funciones Auxiliares
 
 ### `json_serializer(obj: Any) -> Any`
-- **Purpose**: Serializes special data types to JSON
-- **Handles**:
-  - datetime/date objects → ISO format
-  - Decimal numbers → float
+- **Propósito**: Serializa tipos de datos especiales a JSON
+- **Maneja**:
+  - objetos datetime/date → formato ISO
+  - números Decimal → float
 
 ### `get_db() -> DatabaseConnection`
-- **Purpose**: Singleton pattern for database connection
-- **Returns**: Global database connection instance or None if connection fails
+- **Propósito**: Patrón Singleton para la conexión a la base de datos
+- **Retorna**: Instancia global de la conexión a la base de datos o None si la conexión falla
 
-## Core Database Functions
+## Funciones Principales de Base de Datos
 
 ### `list_tables(db: DatabaseConnection) -> str`
-- **Purpose**: Lists all tables in the database
-- **Returns**: Formatted string of table names
+- **Propósito**: Lista todas las tablas en la base de datos
+- **Retorna**: Cadena formateada con los nombres de las tablas
 
 ### `get_table_info(db: DatabaseConnection, table: str) -> str`
-- **Purpose**: Gets detailed information about a specific table
-- **Returns**: Formatted string with:
-  - Column details (name, type, length, nullable, default)
-  - Primary keys
-  - Total row count
+- **Propósito**: Obtiene información detallada sobre una tabla específica
+- **Retorna**: Cadena formateada con:
+  - Detalles de columnas (nombre, tipo, longitud, nullable, valor por defecto)
+  - Claves primarias
+  - Conteo total de filas
 
 ### `query_table(db: DatabaseConnection, table: str, limit: Optional[int] = 5) -> str`
-- **Purpose**: Queries data from a table
-- **Parameters**:
-  - `table`: Table to query
-  - `limit`: Max rows to return (default: 5)
-- **Returns**: Formatted string of query results
+- **Propósito**: Consulta datos de una tabla
+- **Parámetros**:
+  - `table`: Tabla a consultar
+  - `limit`: Máximo de filas a retornar (por defecto: 5)
+- **Retorna**: Cadena formateada con los resultados de la consulta
 
 ### `execute_query(db: DatabaseConnection, query: str, params: Optional[tuple] = None) -> str`
-- **Purpose**: Executes custom SQL queries
-- **Parameters**:
-  - `query`: SQL query to execute
-  - `params`: Optional query parameters
-- **Returns**: Query results or affected rows count
+- **Propósito**: Ejecuta consultas SQL personalizadas
+- **Parámetros**:
+  - `query`: Consulta SQL a ejecutar
+  - `params`: Parámetros opcionales de la consulta
+- **Retorna**: Resultados de la consulta o conteo de filas afectadas
 
-## MCP Tools (Exposed API)
+## Herramientas MCP (API Expuesta)
 
 ### `@mcp.tool() list_tables_tool(args: dict) -> str`
-- **Purpose**: API endpoint for listing tables
-- **Returns**: List of available tables or error message
+- **Propósito**: Punto de entrada API para listar tablas
+- **Retorna**: Lista de tablas disponibles o mensaje de error
 
 ### `@mcp.tool() get_table_info_tool(args: dict) -> str`
-- **Purpose**: API endpoint for table information
-- **Required Args**:
-  - `table`: Name of table to inspect
-- **Returns**: Detailed table information or error message
+- **Propósito**: Punto de entrada API para información de tabla
+- **Argumentos Requeridos**:
+  - `table`: Nombre de la tabla a inspeccionar
+- **Retorna**: Información detallada de la tabla o mensaje de error
 
 ### `@mcp.tool() query_table_tool(args: dict) -> str`
-- **Purpose**: API endpoint for querying tables
-- **Required Args**:
-  - `table`: Name of table to query
-- **Optional Args**:
-  - `limit`: Maximum rows to return (default: 5)
-- **Returns**: Query results or error message
+- **Propósito**: Punto de entrada API para consultar tablas
+- **Argumentos Requeridos**:
+  - `table`: Nombre de la tabla a consultar
+- **Argumentos Opcionales**:
+  - `limit`: Máximo de filas a retornar (por defecto: 5)
+- **Retorna**: Resultados de la consulta o mensaje de error
 
 ### `@mcp.tool() execute_query_tool(args: dict) -> str`
-- **Purpose**: API endpoint for custom SQL queries
-- **Required Args**:
-  - `query`: SQL query to execute
-- **Optional Args**:
-  - `params`: Query parameters
-- **Returns**: Query results or error message
+- **Propósito**: Punto de entrada API para consultas SQL personalizadas
+- **Argumentos Requeridos**:
+  - `query`: Consulta SQL a ejecutar
+- **Argumentos Opcionales**:
+  - `params`: Parámetros de la consulta
+- **Retorna**: Resultados de la consulta o mensaje de error
